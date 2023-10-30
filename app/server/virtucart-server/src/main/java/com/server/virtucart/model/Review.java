@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,26 +13,26 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Review {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String review;
-	
+
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name = "product_id")
 	@JsonIgnore
 	private Product product;
 
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	private LocalDateTime createdAt;
-	
+
 	public Review() {
-		
+
 	}
 
 	public Review(Long id, String review, Product product, User user, LocalDateTime createdAt) {
@@ -84,7 +83,5 @@ public class Review {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
-	
 
 }

@@ -1,4 +1,5 @@
 package com.server.virtucart.model;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,47 +26,47 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "first_name")
-    private String firstName;
-    
-    @Column(name = "last_name")
-    private String lastName;
+	@Column(name = "first_name")
+	private String firstName;
 
-    @Column(name = "password")
-    private String password;
+	@Column(name = "last_name")
+	private String lastName;
 
-    @Column(name = "email")
-    private String email;
-    
-    private UserRole role;
-    
-    private String mobile;
+	@Column(name = "password")
+	private String password;
 
-    
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Address> addresses=new ArrayList<>();
+	@Column(name = "email")
+	private String email;
 
-    @Embedded
-    @ElementCollection
-    @CollectionTable(name="payment_information",joinColumns = @JoinColumn(name="user_id"))
-    private List<PaymentInformation> paymentInformation=new ArrayList<>();
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Rating>ratings=new ArrayList<>();
-    
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Review>reviews=new ArrayList<>();
-    
-    private LocalDateTime createdAt;
-    
-    public User() {
-		
+	private String mobile;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Address> addresses = new ArrayList<>();
+
+	@Embedded
+	@ElementCollection
+	@CollectionTable(name = "payment_information", joinColumns = @JoinColumn(name = "user_id"))
+	private List<PaymentInformation> paymentInformation = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Rating> ratings = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Review> reviews = new ArrayList<>();
+
+	private LocalDateTime createdAt;
+
+	public User() {
+
 	}
 
 	public User(Long id, String firstName, String lastName, String password, String email, UserRole role, String mobile,
@@ -179,5 +182,5 @@ public class User {
 	public void setPaymentInformation(List<PaymentInformation> paymentInformation) {
 		this.paymentInformation = paymentInformation;
 	}
-    
+
 }

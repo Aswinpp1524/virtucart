@@ -4,7 +4,7 @@ import com.server.virtucart.user.domain.PaymentMethod;
 import com.server.virtucart.user.domain.PaymentStatus;
 
 public class PaymentDetails {
-	
+
 	private PaymentMethod paymentMethod;
 	private PaymentStatus status;
 	private String paymentId;
@@ -12,11 +12,10 @@ public class PaymentDetails {
 	private String razorpayPaymentLinkReferenceId;
 	private String razorpayPaymentLinkStatus;
 	private String razorpayPaymentId​;
-	
+
 	public PaymentDetails() {
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	public String getRazorpayPaymentLinkId() {
 		return razorpayPaymentLinkId;
 	}
@@ -52,22 +51,25 @@ public class PaymentDetails {
 	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
+
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
+
 	public String getPaymentId() {
 		return paymentId;
 	}
+
 	public void setPaymentId(String paymentId) {
 		this.paymentId = paymentId;
 	}
+
 	public PaymentStatus getStatus() {
 		return status;
 	}
+
 	public void setStatus(PaymentStatus status) {
 		this.status = status;
 	}
-	
-	
 
 }
