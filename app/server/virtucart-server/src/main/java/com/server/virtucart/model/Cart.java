@@ -1,8 +1,6 @@
 package com.server.virtucart.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -19,30 +17,29 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Cart {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "cart_items")
-    private Set<CartItem> cartItems = new HashSet<>();
+	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Column(name = "cart_items")
+	private Set<CartItem> cartItems = new HashSet<>();
 
-    @Column(name = "total_price")
-    private double totalPrice;
-    
-    @Column(name="total_item")
-    private int totalItem;
-    
-    private int totalDiscountedPrice;
-    
-    private int discounte;
-    
+	@Column(name = "total_price")
+	private double totalPrice;
+
+	@Column(name = "total_item")
+	private int totalItem;
+
+	private int totalDiscountedPrice;
+
+	private int discount;
+
 	public Cart() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Cart(Long id, User user, Set<CartItem> cartItems, double totalPrice, int totalItem) {
@@ -61,12 +58,13 @@ public class Cart {
 	public void setTotalDiscountedPrice(int totalDiscountedPrice) {
 		this.totalDiscountedPrice = totalDiscountedPrice;
 	}
-	public int getDiscounte() {
-		return discounte;
+
+	public int getDiscount() {
+		return discount;
 	}
 
-	public void setDiscounte(int discounte) {
-		this.discounte = discounte;
+	public void setDiscount(int discount) {
+		this.discount = discount;
 	}
 
 	public Long getId() {

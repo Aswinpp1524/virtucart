@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
 		createdOrder.setOrderItems(orderItems);
 		createdOrder.setTotalPrice(cart.getTotalPrice());
 		createdOrder.setTotalDiscountedPrice(cart.getTotalDiscountedPrice());
-		createdOrder.setDiscounte(cart.getDiscounte());
+		createdOrder.setDiscount(cart.getDiscount());
 		createdOrder.setTotalItem(cart.getTotalItem());
 
 		createdOrder.setShippingAddress(address);
@@ -154,7 +154,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void deleteOrder(Long orderId) throws OrderException {
-		Order order = findOrderById(orderId);
+		// Order order = findOrderById(orderId);
 
 		orderRepository.deleteById(orderId);
 

@@ -49,7 +49,7 @@ public class Order {
 
 	private Integer totalDiscountedPrice;
 
-	private Integer discounte;
+	private Integer discount;
 
 	private OrderStatus orderStatus;
 
@@ -77,12 +77,12 @@ public class Order {
 		this.totalItem = totalItem;
 	}
 
-	public Integer getDiscounte() {
-		return discounte;
+	public Integer getDiscount() {
+		return discount;
 	}
 
-	public void setDiscounte(Integer discounte) {
-		this.discounte = discounte;
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
 	}
 
 	public Integer getTotalDiscountedPrice() {
@@ -172,7 +172,5 @@ public class Order {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-
-	// constructors, getters and setters
 
 }

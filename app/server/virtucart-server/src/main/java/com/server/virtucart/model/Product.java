@@ -69,7 +69,7 @@ public class Product {
     private int numRatings;
     
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name="category_id")
     private Category category;
     
