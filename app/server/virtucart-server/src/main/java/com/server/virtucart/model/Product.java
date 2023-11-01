@@ -24,62 +24,61 @@ import jakarta.persistence.OneToMany;
 public class Product {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Column(name = "title")
-    private String title;
+	@Column(name = "title")
+	private String title;
 
-    @Column(name = "description")
-    private String description;
+	@Column(name = "description")
+	private String description;
 
-    @Column(name = "price")
-    private int price;
+	@Column(name = "price")
+	private int price;
 
-    @Column(name = "discounted_price")
-    private int discountedPrice;
-    
-    @Column(name="discount_persent")
-    private int discountPersent;
+	@Column(name = "discounted_price")
+	private int discountedPrice;
 
-    @Column(name = "quantity")
-    private int quantity;
+	@Column(name = "discount_percent")
+	private int discountPercent;
 
-    @Column(name = "brand")
-    private String brand;
+	@Column(name = "quantity")
+	private int quantity;
 
-    @Column(name = "color")
-    private String color;
+	@Column(name = "brand")
+	private String brand;
 
-    @Embedded
-    @ElementCollection
-    @Column(name = "sizes")
-    private Set<Size> sizes=new HashSet<>();
+	@Column(name = "color")
+	private String color;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+	@Embedded
+	@ElementCollection
+	@Column(name = "sizes")
+	private Set<Size> sizes = new HashSet<>();
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Rating>ratings=new ArrayList<>();
-    
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Review>reviews=new ArrayList<>();
+	@Column(name = "image_url")
+	private String imageUrl;
 
-    @Column(name = "num_ratings")
-    private int numRatings;
-    
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Rating> ratings = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name="category_id")
-    private Category category;
-    
-    private LocalDateTime createdAt;
-    
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Review> reviews = new ArrayList<>();
+
+	@Column(name = "num_ratings")
+	private int numRatings;
+
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	private LocalDateTime createdAt;
+
 	public Product() {
-		
+
 	}
 
-	public Product(Long id, String title, String description, int price, int discountedPrice, int discountPersent,
+	public Product(Long id, String title, String description, int price, int discountedPrice, int discountPercent,
 			int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings,
 			List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
 		super();
@@ -88,7 +87,7 @@ public class Product {
 		this.description = description;
 		this.price = price;
 		this.discountedPrice = discountedPrice;
-		this.discountPersent = discountPersent;
+		this.discountPercent = discountPercent;
 		this.quantity = quantity;
 		this.brand = brand;
 		this.color = color;
@@ -108,6 +107,7 @@ public class Product {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+
 	public List<Rating> getRatings() {
 		return ratings;
 	}
@@ -164,12 +164,12 @@ public class Product {
 		this.discountedPrice = discountedPrice;
 	}
 
-	public int getDiscountPersent() {
-		return discountPersent;
+	public int getDiscountPercent() {
+		return discountPercent;
 	}
 
-	public void setDiscountPersent(int discountPersent) {
-		this.discountPersent = discountPersent;
+	public void setDiscountPercent(int discountPercent) {
+		this.discountPercent = discountPercent;
 	}
 
 	public int getQuantity() {
@@ -230,7 +230,7 @@ public class Product {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(brand, category, color, description, discountPersent, discountedPrice, id, imageUrl,
+		return Objects.hash(brand, category, color, description, discountPercent, discountedPrice, id, imageUrl,
 				numRatings, price, quantity, ratings, reviews, sizes, title);
 	}
 
@@ -245,14 +245,11 @@ public class Product {
 		Product other = (Product) obj;
 		return Objects.equals(brand, other.brand) && Objects.equals(category, other.category)
 				&& Objects.equals(color, other.color) && Objects.equals(description, other.description)
-				&& discountPersent == other.discountPersent && discountedPrice == other.discountedPrice
+				&& discountPercent == other.discountPercent && discountedPrice == other.discountedPrice
 				&& Objects.equals(id, other.id) && Objects.equals(imageUrl, other.imageUrl)
 				&& numRatings == other.numRatings && price == other.price && quantity == other.quantity
 				&& Objects.equals(ratings, other.ratings) && Objects.equals(reviews, other.reviews)
 				&& Objects.equals(sizes, other.sizes) && Objects.equals(title, other.title);
 	}
 
-	
-
-   
 }

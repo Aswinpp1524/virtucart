@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.server.virtucart.exception.ProductException;
 import com.server.virtucart.exception.UserException;
 import com.server.virtucart.model.Rating;
-import com.server.virtucart.model.Review;
 import com.server.virtucart.model.User;
 import com.server.virtucart.request.RatingRequest;
 import com.server.virtucart.service.RatingServices;
@@ -24,27 +23,28 @@ import com.server.virtucart.service.UserService;
 @RestController
 @RequestMapping("/api/ratings")
 public class RatingController {
-	
+
 	private UserService userService;
 	private RatingServices ratingServices;
-	
-	public RatingController(UserService userService,RatingServices ratingServices) {
-		this.ratingServices=ratingServices;
-		this.userService=userService;
+
+	public RatingController(UserService userService, RatingServices ratingServices) {
+		this.ratingServices = ratingServices;
+		this.userService = userService;
 		// TODO Auto-generated constructor stub
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<Rating> createRatingHandler(@RequestBody RatingRequest req,@RequestHeader("Authorization") String jwt) throws UserException, ProductException{
-		User user=userService.findUserProfileByJwt(jwt);
-		Rating rating=ratingServices.createRating(req, user);
-		return new ResponseEntity<>(rating,HttpStatus.ACCEPTED);
+	public ResponseEntity<Rating> createRatingHandler(@RequestBody RatingRequest req,
+			@RequestHeader("Authorization") String jwt) throws UserException, ProductException {
+		User user = userService.findUserProfileByJwt(jwt);
+		Rating rating = ratingServices.createRating(req, user);
+		return new ResponseEntity<>(rating, HttpStatus.ACCEPTED);
 	}
-	
+
 	@GetMapping("/product/{productId}")
-	public ResponseEntity<List<Rating>> getProductsReviewHandler(@PathVariable Long productId){
-	
-		List<Rating> ratings=ratingServices.getProductsRating(productId);
-		return new ResponseEntity<>(ratings,HttpStatus.OK);
+	public ResponseEntity<List<Rating>> getProductsReviewHandler(@PathVariable Long productId) {
+
+		List<Rating> ratings = ratingServices.getProductsRating(productId);
+		return new ResponseEntity<>(ratings, HttpStatus.OK);
 	}
 }

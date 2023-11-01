@@ -13,7 +13,6 @@ import com.server.virtucart.model.User;
 import com.server.virtucart.request.LoginRequest;
 import com.server.virtucart.response.AuthResponse;
 import com.server.virtucart.service.AuthService;
-import com.server.virtucart.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -29,7 +28,7 @@ public class AuthController {
 
 		AuthResponse authResponse = authService.createUser(user);
 
-		return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.OK);
+		return new ResponseEntity<>(authResponse, HttpStatus.OK);
 
 	}
 
@@ -38,7 +37,7 @@ public class AuthController {
 
 		AuthResponse authResponse = authService.authenticateUser(loginRequest);
 
-		return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.OK);
+		return new ResponseEntity<>(authResponse, HttpStatus.OK);
 	}
 
 }
