@@ -3,40 +3,38 @@ package com.server.virtucart.request;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.server.virtucart.model.Category;
 import com.server.virtucart.model.Size;
-import com.server.virtucart.user.domain.ProductSize;
-
 
 public class CreateProductRequest {
-	
-    private String title;
 
-    private String description;
+	private String title;
 
-    private int price;
+	private String description;
 
-    private int discountedPrice;
-   
-    private int discountPersent;
+	private int price;
 
-    private int quantity;
+	private int discountedPrice;
 
-    private String brand;
+	private int discountPercent;
 
-    private String color;
+	private int quantity;
 
-    private Set<Size> size=new HashSet<>();
+	private String brand;
 
-    private String imageUrl;
+	private String color;
 
-    private String topLavelCategory;
-    private String secondLavelCategory;
-    private String thirdLavelCategory;
+	private Set<Size> size = new HashSet<>();
+
+	private String imageUrl;
+
+	private String topLevelCategory;
+	private String secondLevelCategory;
+	private String thirdLevelCategory;
 
 	public Set<Size> getSize() {
 		return size;
 	}
+
 	public void setSize(Set<Size> size) {
 		this.size = size;
 	}
@@ -44,9 +42,11 @@ public class CreateProductRequest {
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -71,12 +71,12 @@ public class CreateProductRequest {
 		this.discountedPrice = discountedPrice;
 	}
 
-	public int getDiscountPersent() {
-		return discountPersent;
+	public int getDiscountPercent() {
+		return discountPercent;
 	}
 
-	public void setDiscountPersent(int discountPersent) {
-		this.discountPersent = discountPersent;
+	public void setDiscountPercent(int discountPercent) {
+		this.discountPercent = discountPercent;
 	}
 
 	public int getQuantity() {
@@ -111,31 +111,28 @@ public class CreateProductRequest {
 		this.imageUrl = imageUrl;
 	}
 
-	public String getTopLavelCategory() {
-		return topLavelCategory;
+	public String getTopLevelCategory() {
+		return topLevelCategory;
 	}
 
-	public void setTopLavelCategory(String topLavelCategory) {
-		this.topLavelCategory = topLavelCategory;
+	public void setTopLevelCategory(String topLevelCategory) {
+		this.topLevelCategory = topLevelCategory;
 	}
 
-	public String getSecondLavelCategory() {
-		return secondLavelCategory;
+	public String getSecondLevelCategory() {
+		return secondLevelCategory;
 	}
 
-	public void setSecondLavelCategory(String secondLavelCategory) {
-		this.secondLavelCategory = secondLavelCategory;
+	public void setSecondLevelCategory(String secondLevelCategory) {
+		this.secondLevelCategory = secondLevelCategory;
 	}
 
-	public String getThirdLavelCategory() {
-		return thirdLavelCategory;
+	public String getThirdLevelCategory() {
+		return thirdLevelCategory;
 	}
 
-	public void setThirdLavelCategory(String thirdLavelCategory) {
-		this.thirdLavelCategory = thirdLavelCategory;
+	public void setThirdLevelCategory(String thirdLevelCategory) {
+		this.thirdLevelCategory = thirdLevelCategory;
 	}
 
-	
-    
-    
 }
