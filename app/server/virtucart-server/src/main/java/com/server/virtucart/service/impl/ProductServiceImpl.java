@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,6 +32,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
 	@Override
 	public ProductResponse createProduct(List<ProductRequest> products) {
@@ -104,10 +108,11 @@ public class ProductServiceImpl implements ProductService {
 	public String deleteProduct(Long productId) throws ProductException {
 
 		Product product = findProductById(productId);
+
 		product.getSizes().clear();
 		productRepository.delete(product);
-		String msg = "Product deleted successfully";
-		return msg;
+		logger.info("Product deleted successfully. Product ID: {}", productId);
+		return "Product deleted successfully";
 	}
 
 	@Override
@@ -136,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
 		if (opt.isPresent()) {
 			return opt.get();
 		}
-		throw new ProductException("Product not found with id: " + id);
+		throw new ProductException("Product not found with ID: " + id);
 	}
 
 	@Override
