@@ -20,7 +20,7 @@ import com.server.virtucart.exception.OrderException;
 import com.server.virtucart.exception.UserException;
 import com.server.virtucart.model.Order;
 import com.server.virtucart.repository.OrderRepository;
-import com.server.virtucart.response.ApiResponse;
+import com.server.virtucart.response.ProductResponse;
 import com.server.virtucart.response.PaymentLinkResponse;
 import com.server.virtucart.service.OrderService;
 import com.server.virtucart.service.UserService;
@@ -107,7 +107,7 @@ public class PaymentController {
 	}
 
 	@GetMapping("/payments")
-	public ResponseEntity<ApiResponse> redirect(@RequestParam(name = "payment_id") String paymentId,
+	public ResponseEntity<ProductResponse> redirect(@RequestParam(name = "payment_id") String paymentId,
 			@RequestParam("order_id") Long orderId) throws RazorpayException, OrderException {
 		RazorpayClient razorpay = new RazorpayClient("rzp_test_kTsRSaDC8hwztX", "LieoD1s9mxMIv569PcgRDMcU");
 		Order order = orderService.findOrderById(orderId);
@@ -127,8 +127,8 @@ public class PaymentController {
 				System.out.println(order.getPaymentDetails().getStatus() + "payment status ");
 				orderRepository.save(order);
 			}
-			ApiResponse res = new ApiResponse("your order get placed", true);
-			return new ResponseEntity<ApiResponse>(res, HttpStatus.OK);
+			ProductResponse res = new ProductResponse("your order get placed");
+			return new ResponseEntity<ProductResponse>(res, HttpStatus.OK);
 
 		} catch (Exception e) {
 			System.out.println("errrr payment -------- ");

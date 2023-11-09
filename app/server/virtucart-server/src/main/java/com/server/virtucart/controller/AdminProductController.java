@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.server.virtucart.exception.ProductException;
 import com.server.virtucart.model.Product;
-import com.server.virtucart.request.CreateProductRequest;
-import com.server.virtucart.response.ApiResponse;
+import com.server.virtucart.request.ProductRequest;
+import com.server.virtucart.response.ProductResponse;
 import com.server.virtucart.service.ProductService;
 
 @RestController
@@ -26,29 +26,29 @@ public class AdminProductController {
 
 	@Autowired
 	private ProductService productService;
+//
+//	@PostMapping("/product")
+//	public ResponseEntity<Product> createProductHandler(@RequestBody ProductRequest productReq)
+//			throws ProductException {
+//
+//		Product createdProduct = productService.createProduct(productReq);
+//
+//		return new ResponseEntity<Product>(createdProduct, HttpStatus.ACCEPTED);
+//
+//	}
 
 	@PostMapping("/products")
-	public ResponseEntity<Product> createProductHandler(@RequestBody CreateProductRequest productReq) throws ProductException {
+	public ResponseEntity<ProductResponse> createMultipleProduct(@RequestBody List<ProductRequest> products)
+			throws ProductException {
 
-		Product createdProduct = productService.createProduct(productReq);
-
-		return new ResponseEntity<Product>(createdProduct, HttpStatus.ACCEPTED);
-
+//		for (ProductRequest product : products) {
+//			productService.createProduct(product);
+//		}
+		ProductResponse productResponse = productService.createProduct(products);
+		return new ResponseEntity<ProductResponse>(productResponse, HttpStatus.ACCEPTED);
 	}
 
-	@DeleteMapping("/{productId}/delete")
-	public ResponseEntity<ApiResponse> deleteProductHandler(@PathVariable Long productId) throws ProductException {
-
-		System.out.println("dlete product controller .... ");
-		String msg = productService.deleteProduct(productId);
-		System.out.println("dlete product controller .... msg " + msg);
-		ApiResponse res = new ApiResponse(msg, true);
-
-		return new ResponseEntity<ApiResponse>(res, HttpStatus.ACCEPTED);
-
-	}
-
-	@GetMapping("/all")
+	@GetMapping("/products")
 	public ResponseEntity<List<Product>> findAllProduct() {
 
 		List<Product> products = productService.getAllProducts();
@@ -56,7 +56,7 @@ public class AdminProductController {
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
-	@PutMapping("/{productId}/update")
+	@PutMapping("/products/{productId}")
 	public ResponseEntity<Product> updateProductHandler(@RequestBody Product req, @PathVariable Long productId)
 			throws ProductException {
 
@@ -65,16 +65,14 @@ public class AdminProductController {
 		return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 	}
 
-	@PostMapping("/creates")
-	public ResponseEntity<ApiResponse> createMultipleProduct(@RequestBody CreateProductRequest[] reqs)
-			throws ProductException {
+	@DeleteMapping("/products/{productId}")
+	public ResponseEntity<ProductResponse> deleteProductHandler(@PathVariable Long productId) throws ProductException {
 
-		for (CreateProductRequest product : reqs) {
-			productService.createProduct(product);
-		}
+		String msg = productService.deleteProduct(productId);
+		ProductResponse res = new ProductResponse(msg, productId);
 
-		ApiResponse res = new ApiResponse("products created successfully", true);
-		return new ResponseEntity<ApiResponse>(res, HttpStatus.ACCEPTED);
+		return new ResponseEntity<ProductResponse>(res, HttpStatus.ACCEPTED);
+
 	}
 
 }

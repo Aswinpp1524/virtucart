@@ -1,6 +1,7 @@
 package com.server.virtucart.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,7 +18,8 @@ import com.server.virtucart.model.Category;
 import com.server.virtucart.model.Product;
 import com.server.virtucart.repository.CategoryRepository;
 import com.server.virtucart.repository.ProductRepository;
-import com.server.virtucart.request.CreateProductRequest;
+import com.server.virtucart.request.ProductRequest;
+import com.server.virtucart.response.ProductResponse;
 import com.server.virtucart.service.ProductService;
 
 @Service
@@ -30,59 +32,70 @@ public class ProductServiceImpl implements ProductService {
 	private CategoryRepository categoryRepository;
 
 	@Override
-	public Product createProduct(CreateProductRequest req) {
+	public ProductResponse createProduct(List<ProductRequest> products) {
 
-		Category topLevel = categoryRepository.findByName(req.getTopLevelCategory());
+		List<Long> productsId = new ArrayList<>();
+		for (ProductRequest product : products) {
+			Product savedProduct = createNewProducts(product);
+			productsId.add(savedProduct.getId());
+		}
+		ProductResponse productResponse = new ProductResponse();
+		productResponse.setMessage("Products added successfully");
+		productResponse.setProductsId(productsId);
+		return productResponse;
+	}
+
+	private Product createNewProducts(ProductRequest productReq) {
+		Category topLevel = categoryRepository.findByName(productReq.getTopLevelCategory());
 
 		if (topLevel == null) {
 
 			Category topLavelCategory = new Category();
-			topLavelCategory.setName(req.getTopLevelCategory());
+			topLavelCategory.setName(productReq.getTopLevelCategory());
 			topLavelCategory.setLevel(1);
 
 			topLevel = categoryRepository.save(topLavelCategory);
 		}
 
-		Category secondLevel = categoryRepository.findByNameAndParant(req.getSecondLevelCategory(), topLevel.getName());
+		Category secondLevel = categoryRepository.findByNameAndParant(productReq.getSecondLevelCategory(),
+				topLevel.getName());
+
 		if (secondLevel == null) {
 
 			Category secondLavelCategory = new Category();
-			secondLavelCategory.setName(req.getSecondLevelCategory());
+			secondLavelCategory.setName(productReq.getSecondLevelCategory());
 			secondLavelCategory.setParentCategory(topLevel);
 			secondLavelCategory.setLevel(2);
-
 			secondLevel = categoryRepository.save(secondLavelCategory);
 		}
 
-		Category thirdLevel = categoryRepository.findByNameAndParant(req.getThirdLevelCategory(),
+		Category thirdLevel = categoryRepository.findByNameAndParant(productReq.getThirdLevelCategory(),
 				secondLevel.getName());
+
 		if (thirdLevel == null) {
 
 			Category thirdLavelCategory = new Category();
-			thirdLavelCategory.setName(req.getThirdLevelCategory());
+			thirdLavelCategory.setName(productReq.getThirdLevelCategory());
 			thirdLavelCategory.setParentCategory(secondLevel);
 			thirdLavelCategory.setLevel(3);
-
 			thirdLevel = categoryRepository.save(thirdLavelCategory);
 		}
 
 		Product product = new Product();
-		product.setTitle(req.getTitle());
-		product.setColor(req.getColor());
-		product.setDescription(req.getDescription());
-		product.setDiscountedPrice(req.getDiscountedPrice());
-		product.setDiscountPercent(req.getDiscountPercent());
-		product.setImageUrl(req.getImageUrl());
-		product.setBrand(req.getBrand());
-		product.setPrice(req.getPrice());
-		product.setSizes(req.getSize());
-		product.setQuantity(req.getQuantity());
+		product.setTitle(productReq.getTitle());
+		product.setColor(productReq.getColor());
+		product.setDescription(productReq.getDescription());
+		product.setDiscountedPrice(productReq.getDiscountedPrice());
+		product.setDiscountPercent(productReq.getDiscountPercent());
+		product.setImageUrl(productReq.getImageUrl());
+		product.setBrand(productReq.getBrand());
+		product.setPrice(productReq.getPrice());
+		product.setSizes(productReq.getSize());
+		product.setQuantity(productReq.getQuantity());
 		product.setCategory(thirdLevel);
 		product.setCreatedAt(LocalDateTime.now());
 
 		Product savedProduct = productRepository.save(product);
-
-		System.out.println("products - " + product);
 
 		return savedProduct;
 	}
@@ -91,14 +104,10 @@ public class ProductServiceImpl implements ProductService {
 	public String deleteProduct(Long productId) throws ProductException {
 
 		Product product = findProductById(productId);
-
-		System.out.println("delete product " + product.getId() + " - " + productId);
 		product.getSizes().clear();
-//		productRepository.save(product);
-//		product.getCategory().
 		productRepository.delete(product);
-
-		return "Product deleted Successfully";
+		String msg = "Product deleted successfully";
+		return msg;
 	}
 
 	@Override
@@ -127,13 +136,11 @@ public class ProductServiceImpl implements ProductService {
 		if (opt.isPresent()) {
 			return opt.get();
 		}
-		throw new ProductException("product not found with id " + id);
+		throw new ProductException("Product not found with id: " + id);
 	}
 
 	@Override
 	public List<Product> findProductByCategory(String category) {
-
-		System.out.println("category --- " + category);
 
 		List<Product> products = productRepository.findByCategory(category);
 

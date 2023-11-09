@@ -14,7 +14,7 @@ import com.server.virtucart.exception.UserException;
 import com.server.virtucart.model.Cart;
 import com.server.virtucart.model.User;
 import com.server.virtucart.request.AddItemRequest;
-import com.server.virtucart.response.ApiResponse;
+import com.server.virtucart.response.ProductResponse;
 import com.server.virtucart.service.CartService;
 import com.server.virtucart.service.UserService;
 
@@ -43,16 +43,16 @@ public class CartController {
 	}
 
 	@PutMapping("/add")
-	public ResponseEntity<ApiResponse> addItemToCart(@RequestBody AddItemRequest req,
+	public ResponseEntity<ProductResponse> addItemToCart(@RequestBody AddItemRequest req,
 			@RequestHeader("Authorization") String jwt) throws UserException, ProductException {
 
 		User user = userService.findUserProfileByJwt(jwt);
 
 		cartService.addCartItem(user.getId(), req);
 
-		ApiResponse res = new ApiResponse("Item Added To Cart Successfully", true);
+		ProductResponse res = new ProductResponse("Item Added To Cart Successfully");
 
-		return new ResponseEntity<ApiResponse>(res, HttpStatus.ACCEPTED);
+		return new ResponseEntity<ProductResponse>(res, HttpStatus.ACCEPTED);
 
 	}
 

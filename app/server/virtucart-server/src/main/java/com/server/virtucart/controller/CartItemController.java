@@ -14,7 +14,7 @@ import com.server.virtucart.exception.CartItemException;
 import com.server.virtucart.exception.UserException;
 import com.server.virtucart.model.CartItem;
 import com.server.virtucart.model.User;
-import com.server.virtucart.response.ApiResponse;
+import com.server.virtucart.response.ProductResponse;
 import com.server.virtucart.service.CartItemService;
 import com.server.virtucart.service.UserService;
 
@@ -24,32 +24,34 @@ public class CartItemController {
 
 	private CartItemService cartItemService;
 	private UserService userService;
-	
-	public CartItemController(CartItemService cartItemService,UserService userService) {
-		this.cartItemService=cartItemService;
-		this.userService=userService;
+
+	public CartItemController(CartItemService cartItemService, UserService userService) {
+		this.cartItemService = cartItemService;
+		this.userService = userService;
 	}
-	
+
 	@DeleteMapping("/{cartItemId}")
-	public ResponseEntity<ApiResponse>deleteCartItemHandler(@PathVariable Long cartItemId, @RequestHeader("Authorization")String jwt) throws CartItemException, UserException{
-		
-		User user=userService.findUserProfileByJwt(jwt);
+	public ResponseEntity<ProductResponse> deleteCartItemHandler(@PathVariable Long cartItemId,
+			@RequestHeader("Authorization") String jwt) throws CartItemException, UserException {
+
+		User user = userService.findUserProfileByJwt(jwt);
 		cartItemService.removeCartItem(user.getId(), cartItemId);
-		
-		ApiResponse res=new ApiResponse("Item Remove From Cart",true);
-		
-		return new ResponseEntity<ApiResponse>(res,HttpStatus.ACCEPTED);
+
+		ProductResponse res = new ProductResponse("Item Remove From Cart");
+
+		return new ResponseEntity<ProductResponse>(res, HttpStatus.ACCEPTED);
 	}
-	
+
 	@PutMapping("/{cartItemId}")
-	public ResponseEntity<CartItem>updateCartItemHandler(@PathVariable Long cartItemId, @RequestBody CartItem cartItem, @RequestHeader("Authorization")String jwt) throws CartItemException, UserException{
-		
-		User user=userService.findUserProfileByJwt(jwt);
-		
-		CartItem updatedCartItem =cartItemService.updateCartItem(user.getId(), cartItemId, cartItem);
-		
-		//ApiResponse res=new ApiResponse("Item Updated",true);
-		
-		return new ResponseEntity<>(updatedCartItem,HttpStatus.ACCEPTED);
+	public ResponseEntity<CartItem> updateCartItemHandler(@PathVariable Long cartItemId, @RequestBody CartItem cartItem,
+			@RequestHeader("Authorization") String jwt) throws CartItemException, UserException {
+
+		User user = userService.findUserProfileByJwt(jwt);
+
+		CartItem updatedCartItem = cartItemService.updateCartItem(user.getId(), cartItemId, cartItem);
+
+		// ApiResponse res=new ApiResponse("Item Updated",true);
+
+		return new ResponseEntity<>(updatedCartItem, HttpStatus.ACCEPTED);
 	}
 }

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.server.virtucart.model.Size;
 
-public class CreateProductRequest {
+public class ProductRequest {
 
 	private String title;
 
