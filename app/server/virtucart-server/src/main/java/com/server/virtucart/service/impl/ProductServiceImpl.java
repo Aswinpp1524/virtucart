@@ -15,7 +15,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import com.server.virtucart.enums.StockStatus;
 import com.server.virtucart.exception.ProductException;
 import com.server.virtucart.model.Category;
 import com.server.virtucart.model.Product;
@@ -196,7 +198,7 @@ public class ProductServiceImpl implements ProductService {
 
 		List<Product> products = productRepository.filterProducts(category, minPrice, maxPrice, minDiscount, sort);
 
-		if (!colors.isEmpty()) {
+		if (!CollectionUtils.isEmpty(colors)) {
 			products = products.stream().filter(p -> colors.stream().anyMatch(c -> c.equalsIgnoreCase(p.getColor())))
 					.collect(Collectors.toList());
 
@@ -204,9 +206,9 @@ public class ProductServiceImpl implements ProductService {
 
 		if (stock != null) {
 
-			if (stock.equals("in_stock")) {
+			if (StockStatus.IN_STOCK.getValue().equals(stock)) {
 				products = products.stream().filter(p -> p.getQuantity() > 0).collect(Collectors.toList());
-			} else if (stock.equals("out_of_stock")) {
+			} else if (StockStatus.OUT_OF_STOCK.getValue().equals(stock)) {
 				products = products.stream().filter(p -> p.getQuantity() < 1).collect(Collectors.toList());
 			}
 
@@ -216,7 +218,8 @@ public class ProductServiceImpl implements ProductService {
 
 		List<Product> pageContent = products.subList(startIndex, endIndex);
 		Page<Product> filteredProducts = new PageImpl<>(pageContent, pageable, products.size());
-		return filteredProducts; // If color list is empty, do nothing and return all products
+
+		return filteredProducts;
 
 	}
 

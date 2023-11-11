@@ -26,16 +26,6 @@ public class AdminProductController {
 
 	@Autowired
 	private ProductService productService;
-//
-//	@PostMapping("/product")
-//	public ResponseEntity<Product> createProductHandler(@RequestBody ProductRequest productReq)
-//			throws ProductException {
-//
-//		Product createdProduct = productService.createProduct(productReq);
-//
-//		return new ResponseEntity<Product>(createdProduct, HttpStatus.ACCEPTED);
-//
-//	}
 
 	@PostMapping("/products")
 	public ResponseEntity<ProductResponse> createMultipleProduct(@RequestBody List<ProductRequest> products)
