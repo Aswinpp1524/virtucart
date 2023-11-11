@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
 	@Override
-	public ProductResponse createProduct(List<ProductRequest> products) {
+	public ProductResponse createProduct(List<ProductRequest> products) throws ProductException {
 
 		List<Long> productsId = new ArrayList<>();
 		for (ProductRequest product : products) {
@@ -49,7 +50,10 @@ public class ProductServiceImpl implements ProductService {
 		return productResponse;
 	}
 
-	private Product createNewProducts(ProductRequest productReq) {
+	private Product createNewProducts(ProductRequest productReq) throws ProductException {
+
+		Product savedProduct = null;
+
 		Category topLevel = categoryRepository.findByName(productReq.getTopLevelCategory());
 
 		if (topLevel == null) {
@@ -99,8 +103,11 @@ public class ProductServiceImpl implements ProductService {
 		product.setCategory(thirdLevel);
 		product.setCreatedAt(LocalDateTime.now());
 
-		Product savedProduct = productRepository.save(product);
-
+		try {
+			savedProduct = productRepository.save(product);
+		} catch (DataIntegrityViolationException ex) {
+			throw new ProductException("Failed to add product. Please check your input data.");
+		}
 		return savedProduct;
 	}
 
@@ -117,16 +124,39 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product updateProduct(Long productId, Product req) throws ProductException {
+
 		Product product = findProductById(productId);
 
-		if (req.getQuantity() != 0) {
-			product.setQuantity(req.getQuantity());
+		if (req.getTitle() != null) {
+			product.setTitle(req.getTitle());
 		}
 		if (req.getDescription() != null) {
 			product.setDescription(req.getDescription());
 		}
+		if (req.getPrice() > 0) {
+			product.setPrice(req.getPrice());
+		}
+		if (req.getDiscountedPrice() >= 0) {
+			product.setDiscountedPrice(req.getDiscountedPrice());
+		}
+		if (req.getDiscountPercent() >= 0 && req.getDiscountPercent() <= 100) {
+			product.setDiscountPercent(req.getDiscountPercent());
+		}
+		if (req.getQuantity() >= 0) {
+			product.setQuantity(req.getQuantity());
+		}
+		if (req.getBrand() != null) {
+			product.setBrand(req.getBrand());
+		}
+		if (req.getImageUrl() != null) {
+			product.setImageUrl(req.getImageUrl());
+		}
 
-		return productRepository.save(product);
+		try {
+			return productRepository.save(product);
+		} catch (DataIntegrityViolationException ex) {
+			throw new ProductException("Failed to update product. Please try again.");
+		}
 	}
 
 	@Override

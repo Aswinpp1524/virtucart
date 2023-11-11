@@ -40,10 +40,6 @@ public class AdminProductController {
 	@PostMapping("/products")
 	public ResponseEntity<ProductResponse> createMultipleProduct(@RequestBody List<ProductRequest> products)
 			throws ProductException {
-
-//		for (ProductRequest product : products) {
-//			productService.createProduct(product);
-//		}
 		ProductResponse productResponse = productService.createProduct(products);
 		return new ResponseEntity<ProductResponse>(productResponse, HttpStatus.ACCEPTED);
 	}
