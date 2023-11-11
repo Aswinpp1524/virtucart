@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByEmail(email);
 
 		if (user == null) {
-			throw new UserException("User not exist with email: " + email);
+			throw new UserException("User does not exist with email: " + email);
 		}
 		return user;
 	}

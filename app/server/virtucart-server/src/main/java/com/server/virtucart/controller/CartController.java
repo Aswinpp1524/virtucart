@@ -19,7 +19,7 @@ import com.server.virtucart.service.CartService;
 import com.server.virtucart.service.UserService;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api")
 public class CartController {
 
 	private CartService cartService;
@@ -30,19 +30,17 @@ public class CartController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/")
+	@GetMapping("/cart")
 	public ResponseEntity<Cart> findUserCartHandler(@RequestHeader("Authorization") String jwt) throws UserException {
 
 		User user = userService.findUserProfileByJwt(jwt);
 
 		Cart cart = cartService.findUserCart(user.getId());
 
-		System.out.println("cart - " + cart.getUser().getEmail());
-
 		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
 	}
 
-	@PutMapping("/add")
+	@PutMapping("/cart/add")
 	public ResponseEntity<ProductResponse> addItemToCart(@RequestBody AddItemRequest req,
 			@RequestHeader("Authorization") String jwt) throws UserException, ProductException {
 

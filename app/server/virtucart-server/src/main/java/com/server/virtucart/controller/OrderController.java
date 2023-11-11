@@ -21,7 +21,7 @@ import com.server.virtucart.service.OrderService;
 import com.server.virtucart.service.UserService;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api")
 public class OrderController {
 
 	private OrderService orderService;
@@ -32,7 +32,7 @@ public class OrderController {
 		this.userService = userService;
 	}
 
-	@PostMapping("/")
+	@PostMapping("/orders")
 	public ResponseEntity<Order> createOrderHandler(@RequestBody Address spippingAddress,
 			@RequestHeader("Authorization") String jwt) throws UserException {
 
@@ -43,7 +43,7 @@ public class OrderController {
 
 	}
 
-	@GetMapping("/user")
+	@GetMapping("/orders/user")
 	public ResponseEntity<List<Order>> usersOrderHistoryHandler(@RequestHeader("Authorization") String jwt)
 			throws OrderException, UserException {
 
@@ -52,7 +52,7 @@ public class OrderController {
 		return new ResponseEntity<>(orders, HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/{orderId}")
+	@GetMapping("/orders/{orderId}")
 	public ResponseEntity<Order> findOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException, UserException {
 

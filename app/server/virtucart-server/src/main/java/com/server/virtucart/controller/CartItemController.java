@@ -1,5 +1,6 @@
 package com.server.virtucart.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,13 +23,11 @@ import com.server.virtucart.service.UserService;
 @RequestMapping("/api/cart_items")
 public class CartItemController {
 
+	@Autowired
 	private CartItemService cartItemService;
-	private UserService userService;
 
-	public CartItemController(CartItemService cartItemService, UserService userService) {
-		this.cartItemService = cartItemService;
-		this.userService = userService;
-	}
+	@Autowired
+	private UserService userService;
 
 	@DeleteMapping("/{cartItemId}")
 	public ResponseEntity<ProductResponse> deleteCartItemHandler(@PathVariable Long cartItemId,
@@ -37,7 +36,7 @@ public class CartItemController {
 		User user = userService.findUserProfileByJwt(jwt);
 		cartItemService.removeCartItem(user.getId(), cartItemId);
 
-		ProductResponse res = new ProductResponse("Item Remove From Cart");
+		ProductResponse res = new ProductResponse("Item Removed From Cart");
 
 		return new ResponseEntity<ProductResponse>(res, HttpStatus.ACCEPTED);
 	}
@@ -49,8 +48,6 @@ public class CartItemController {
 		User user = userService.findUserProfileByJwt(jwt);
 
 		CartItem updatedCartItem = cartItemService.updateCartItem(user.getId(), cartItemId, cartItem);
-
-		// ApiResponse res=new ApiResponse("Item Updated",true);
 
 		return new ResponseEntity<>(updatedCartItem, HttpStatus.ACCEPTED);
 	}
