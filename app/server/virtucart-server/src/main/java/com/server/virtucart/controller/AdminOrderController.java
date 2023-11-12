@@ -18,56 +18,61 @@ import com.server.virtucart.response.ProductResponse;
 import com.server.virtucart.service.OrderService;
 
 @RestController
-@RequestMapping("/api/admin/orders")
+@RequestMapping("/api/admin")
 public class AdminOrderController {
 
 	private OrderService orderService;
 
 	public AdminOrderController(OrderService orderService) {
+		
 		this.orderService = orderService;
 	}
 
-	@GetMapping("/")
+	@GetMapping("/orders")
 	public ResponseEntity<List<Order>> getAllOrdersHandler() {
+		
 		List<Order> orders = orderService.getAllOrders();
-
 		return new ResponseEntity<>(orders, HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/{orderId}/confirmed")
+	@PutMapping("/orders/{orderId}/confirmed")
 	public ResponseEntity<Order> ConfirmedOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
+		
 		Order order = orderService.confirmedOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/{orderId}/ship")
+	@PutMapping("/orders/{orderId}/shipped")
 	public ResponseEntity<Order> shippedOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
+		
 		Order order = orderService.shippedOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/{orderId}/deliver")
+	@PutMapping("/orders/{orderId}/deliver")
 	public ResponseEntity<Order> deliveredOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
+		
 		Order order = orderService.deliveredOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/{orderId}/cancel")
+	@PutMapping("/orders/{orderId}/cancel")
 	public ResponseEntity<Order> canceledOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
+		
 		Order order = orderService.cancledOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
 
-	@DeleteMapping("/{orderId}/delete")
+	@DeleteMapping("/orders/{orderId}/delete")
 	public ResponseEntity<ProductResponse> deleteOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
+		
 		orderService.deleteOrder(orderId);
 		ProductResponse res = new ProductResponse("Order Deleted Successfully");
-		System.out.println("delete method working....");
 		return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
 	}
 
