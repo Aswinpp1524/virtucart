@@ -2,6 +2,7 @@ package com.server.virtucart.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,16 +22,12 @@ import com.server.virtucart.service.OrderService;
 @RequestMapping("/api/admin")
 public class AdminOrderController {
 
+	@Autowired
 	private OrderService orderService;
-
-	public AdminOrderController(OrderService orderService) {
-		
-		this.orderService = orderService;
-	}
 
 	@GetMapping("/orders")
 	public ResponseEntity<List<Order>> getAllOrdersHandler() {
-		
+
 		List<Order> orders = orderService.getAllOrders();
 		return new ResponseEntity<>(orders, HttpStatus.ACCEPTED);
 	}
@@ -38,7 +35,7 @@ public class AdminOrderController {
 	@PutMapping("/orders/{orderId}/confirmed")
 	public ResponseEntity<Order> ConfirmedOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
-		
+
 		Order order = orderService.confirmedOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
@@ -46,7 +43,7 @@ public class AdminOrderController {
 	@PutMapping("/orders/{orderId}/shipped")
 	public ResponseEntity<Order> shippedOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
-		
+
 		Order order = orderService.shippedOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
@@ -54,7 +51,7 @@ public class AdminOrderController {
 	@PutMapping("/orders/{orderId}/deliver")
 	public ResponseEntity<Order> deliveredOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
-		
+
 		Order order = orderService.deliveredOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
@@ -62,7 +59,7 @@ public class AdminOrderController {
 	@PutMapping("/orders/{orderId}/cancel")
 	public ResponseEntity<Order> canceledOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
-		
+
 		Order order = orderService.cancledOrder(orderId);
 		return new ResponseEntity<Order>(order, HttpStatus.ACCEPTED);
 	}
@@ -70,7 +67,7 @@ public class AdminOrderController {
 	@DeleteMapping("/orders/{orderId}/delete")
 	public ResponseEntity<ProductResponse> deleteOrderHandler(@PathVariable Long orderId,
 			@RequestHeader("Authorization") String jwt) throws OrderException {
-		
+
 		orderService.deleteOrder(orderId);
 		ProductResponse res = new ProductResponse("Order Deleted Successfully");
 		return new ResponseEntity<>(res, HttpStatus.ACCEPTED);

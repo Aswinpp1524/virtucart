@@ -2,6 +2,7 @@ package com.server.virtucart.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,18 +25,16 @@ import com.server.virtucart.service.UserService;
 @RequestMapping("/api/ratings")
 public class RatingController {
 
+	@Autowired
 	private UserService userService;
-	private RatingServices ratingServices;
 
-	public RatingController(UserService userService, RatingServices ratingServices) {
-		this.ratingServices = ratingServices;
-		this.userService = userService;
-		// TODO Auto-generated constructor stub
-	}
+	@Autowired
+	private RatingServices ratingServices;
 
 	@PostMapping("/create")
 	public ResponseEntity<Rating> createRatingHandler(@RequestBody RatingRequest req,
 			@RequestHeader("Authorization") String jwt) throws UserException, ProductException {
+		
 		User user = userService.findUserProfileByJwt(jwt);
 		Rating rating = ratingServices.createRating(req, user);
 		return new ResponseEntity<>(rating, HttpStatus.ACCEPTED);
