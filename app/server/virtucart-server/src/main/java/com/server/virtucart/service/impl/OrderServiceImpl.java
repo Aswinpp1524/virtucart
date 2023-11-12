@@ -137,7 +137,7 @@ public class OrderServiceImpl implements OrderService {
 		if (opt.isPresent()) {
 			return opt.get();
 		}
-		throw new OrderException("order not exist with id " + orderId);
+		throw new OrderException("Order does not exist with id: " + orderId);
 	}
 
 	@Override
