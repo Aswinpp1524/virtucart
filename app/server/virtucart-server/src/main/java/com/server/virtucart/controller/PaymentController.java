@@ -1,6 +1,7 @@
 package com.server.virtucart.controller;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,15 +32,15 @@ import com.server.virtucart.user.domain.PaymentStatus;
 @RequestMapping("/api")
 public class PaymentController {
 
+	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
 	private UserService userService;
+	
+	@Autowired
 	private OrderRepository orderRepository;
 
-	public PaymentController(OrderService orderService, UserService userService, OrderRepository orderRepository) {
-		this.orderService = orderService;
-		this.userService = userService;
-		this.orderRepository = orderRepository;
-	}
 
 	@PostMapping("/payments/{orderId}")
 	public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable Long orderId,
